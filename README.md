@@ -45,6 +45,8 @@ Use the following snippet to integrate the plugin in your AngularJS app graceful
 
                 // Decorating standard exception handling behaviour by sending exception to crashlytics plugin
                 var message = exception.toString();
+                // Here, I rely on stacktrace-js (http://www.stacktracejs.com/) to format exception stacktraces before
+                // sending it to the native bridge
                 var stacktrace = $window.printStackTrace({e: exception});
                 navigator.crashlytics.logException("ERROR: "+message+", stacktrace: "+stacktrace);
             };
