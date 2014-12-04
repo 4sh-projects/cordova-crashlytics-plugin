@@ -27,6 +27,18 @@ Update your `platforms/android/AndroidManifest.xm` file by adding your crashlyti
 Plugins provides a `navigator.crashlytics` object with following methods :
 - logException(string) : Sends an exception (non fatal) to the Crashlytics backend
 - log(string) : Sends a standard log message (non fatal) to the Crashlytics backend
+- log(errorLevel, tag, msg)
+- setApplicationInstallationIdentifier(appInstId)
+- setBool(key, value)
+- setDouble(key, value)
+- setFloat(key, value)
+- setInt(key, value)
+- setLong(key, value)
+- setString(key, value)
+- setUserEmail(email)
+- setUserIdentifier(userId)
+- setUserName(userName)
+
 
 ### Supported platforms
 
