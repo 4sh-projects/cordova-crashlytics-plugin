@@ -24,6 +24,15 @@ var Crashlytics = function(){
             execCall(methods[i], arguments);
         };
     }
+
+    this.LOG_LEVELS = {
+        VERBOSE: 2,
+        DEBUG: 3,
+        INFO: 4,
+        WARN: 5,
+        ERROR: 6,
+        ASSERT: 7
+    };
 };
 
 var crashlytics = new Crashlytics();
