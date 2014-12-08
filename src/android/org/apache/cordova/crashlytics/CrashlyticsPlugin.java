@@ -5,6 +5,8 @@ import com.crashlytics.android.Crashlytics;
 import org.apache.cordova.*;
 import org.json.JSONException;
 
+import javax.security.auth.callback.Callback;
+
 public class CrashlyticsPlugin extends CordovaPlugin {
 
     @Override
@@ -103,7 +105,7 @@ public class CrashlyticsPlugin extends CordovaPlugin {
                 Crashlytics.setUserName(args.getString(0));
             }
         },
-        simulateCrash(0){
+        simulateCrash(0, false){
             @Override
             public void call(CordovaArgs args) throws JSONException {
                 String message = args.getString(0) == null ? "This is a crash":args.getString(0);
@@ -112,8 +114,13 @@ public class CrashlyticsPlugin extends CordovaPlugin {
         };
 
         int minExpectedArgsLength;
+        boolean isAsync = true;
         BridgedMethods(int minExpectedArgsLength) {
+            this(minExpectedArgsLength, true);
+        }
+        BridgedMethods(int minExpectedArgsLength, boolean isAsync) {
             this.minExpectedArgsLength = minExpectedArgsLength;
+            this.isAsync = isAsync;
         }
 
         public abstract void call(CordovaArgs args) throws JSONException;
@@ -123,6 +130,21 @@ public class CrashlyticsPlugin extends CordovaPlugin {
                     // Doesn't seem to have any api (better than this...) to retrieve args' length ...
                     && args.getString(minExpectedArgsLenght -1)!=null
                     && args.getString(minExpectedArgsLenght -1).length()!=0);
+        }
+
+        public Runnable runnableFrom(final CallbackContext callbackContext, final CordovaArgs args) {
+            final BridgedMethods method = this;
+            return new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        method.call(args);
+                        callbackContext.success();
+                    } catch (Throwable t) {
+                        callbackContext.error(t.getMessage());
+                    }
+                }
+            };
         }
     }
 
@@ -136,17 +158,13 @@ public class CrashlyticsPlugin extends CordovaPlugin {
                     return true;
                 }
 
-                cordova.getThreadPool().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            bridgedMethods.call(args);
-                            callbackContext.success();
-                        } catch (Throwable t) {
-                            callbackContext.error(t.getMessage());
-                        }
-                    }
-                });
+                Runnable runnable = bridgedMethods.runnableFrom(callbackContext, args);
+                if(bridgedMethods.isAsync) {
+                    cordova.getThreadPool().execute(runnable);
+                } else {
+                    runnable.run();
+                }
+                
                 return true;
             }
         }catch(IllegalArgumentException e) { // Didn't found any enum value corresponding to requested action
