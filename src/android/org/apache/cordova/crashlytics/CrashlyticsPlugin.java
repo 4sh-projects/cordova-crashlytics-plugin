@@ -102,6 +102,13 @@ public class CrashlyticsPlugin extends CordovaPlugin {
             public void call(CordovaArgs args) throws JSONException {
                 Crashlytics.setUserName(args.getString(0));
             }
+        },
+        simulateCrash(0){
+            @Override
+            public void call(CordovaArgs args) throws JSONException {
+                String message = args.getString(0) == null ? "This is a crash":args.getString(0);
+                throw new RuntimeException(message);
+            }
         };
 
         int minExpectedArgsLength;
@@ -135,14 +142,14 @@ public class CrashlyticsPlugin extends CordovaPlugin {
                         try {
                             bridgedMethods.call(args);
                             callbackContext.success();
-                        } catch (JSONException e) {
-                            callbackContext.error(e.getMessage());
+                        } catch (Throwable t) {
+                            callbackContext.error(t.getMessage());
                         }
                     }
                 });
                 return true;
             }
-        }catch(IllegalArgumentException e) {
+        }catch(IllegalArgumentException e) { // Didn't found any enum value corresponding to requested action
             return false;
         }
 

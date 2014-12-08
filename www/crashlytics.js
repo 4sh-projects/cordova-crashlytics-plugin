@@ -7,7 +7,7 @@ var Crashlytics = function(){
     var methods = [
         'logException', 'log', 'setApplicationInstallationIdentifier',
         'setBool', 'setDouble', 'setFloat', 'setInt', 'setLong', 'setString', 'setUserEmail',
-        'setUserIdentifier', 'setUserName'
+        'setUserIdentifier', 'setUserName', 'simulateCrash'
     ];
 
     var execCall;
