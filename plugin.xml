@@ -44,7 +44,7 @@
         </config-file>
 
         <source-file src="src/android/org/apache/cordova/crashlytics/CrashlyticsPlugin.java" target-dir="src/org/apache/cordova/crashlytics" />
-        <source-file src="libs/android/crashlytics-1.1.13.29.jar" target-dir="libs" />
+        <source-file src="libs/android/crashlytics.jar" target-dir="libs" />
     </platform>
 
 </plugin>

@@ -7,11 +7,56 @@
     <version>0.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+    <properties>
+        <crashlytics.version>1.1.13</crashlytics.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>crashlytics-repo</id>
+            <url>http://download.crashlytics.com/maven</url>
+        </repository>
+        <repository>
+            <id>4sh.pubs</id>
+            <url>http://repo.4sh.fr/artifactory/pubs/</url>
+        </repository>
+    </repositories>
+
     <build>
         <sourceDirectory>src/android</sourceDirectory>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.9</version>
+            <executions>
+              <execution>
+                <id>copy</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>com.crashlytics.android</groupId>
+                      <artifactId>crashlytics</artifactId>
+                      <version>${crashlytics.version}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.basedir}/libs/android</outputDirectory>
+                      <destFileName>crashlytics.jar</destFileName>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
     </build>
 
     <dependencies>
+        <!-- Cordova provided deps -->
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
@@ -24,6 +69,19 @@
             <version>20090211</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cordova</groupId>
+            <artifactId>cordova-android</artifactId>
+            <version>3.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Crashlytics bundled jar -->
+        <dependency>
+            <groupId>com.crashlytics.android</groupId>
+            <artifactId>crashlytics</artifactId>
+            <version>${crashlytics.version}</version>
+        </dependency>
     </dependencies>
+
 
 </project>
