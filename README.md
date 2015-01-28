@@ -5,7 +5,7 @@ client API.
 
 ## Installation
 
-    cordova plugin add https://github.com/4sh/cordova-crashlytics-plugin
+    cordova plugin add https://github.com/4sh-projects/cordova-crashlytics-plugin
 
 ### Android specificities
 
