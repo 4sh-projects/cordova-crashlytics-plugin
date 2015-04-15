@@ -5,7 +5,7 @@ client API.
 
 ## Installation
 
-    cordova plugin add https://github.com/4sh-projects/cordova-crashlytics-plugin --variable CRASHLYTICS_API_KEY=<YOUR CRASHLYTICS API KEY HERE>
+    cordova plugin add https://github.com/4sh-projects/cordova-crashlytics-plugin --variable CRASHLYTICS_API_SECRET=<YOUR CRASHLYTICS API SECRET HERE> --variable CRASHLYTICS_API_KEY=<YOUR CRASHLYTICS API KEY HERE>
 
 
 ## Crashlytics

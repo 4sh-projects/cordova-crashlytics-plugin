@@ -28,6 +28,7 @@
     <keywords>cordova,crashlytics</keywords>
 
     <preference name="CRASHLYTICS_API_KEY" />
+    <preference name="CRASHLYTICS_API_SECRET" />
 
     <js-module src="www/crashlytics.js" name="crashlytics">
         <clobbers target="navigator.crashlytics" />
@@ -47,8 +48,13 @@
             <meta-data android:name="com.crashlytics.ApiKey" android:value="$CRASHLYTICS_API_KEY" />
         </config-file>
 
+        <config-file target="custom_rules.xml" parent="/*">
+            <import file="../../plugins/org.apache.cordova.crashlytics/tools/android/crashlytics_build.xml"/>
+        </config-file>
+
         <source-file src="src/android/org/apache/cordova/crashlytics/CrashlyticsPlugin.java" target-dir="src/org/apache/cordova/crashlytics" />
         <source-file src="libs/android/crashlytics-1.1.13.jar" target-dir="libs" />
     </platform>
 
+    <hook type="before_build" src="hooks/before_build.js" />
 </plugin>
