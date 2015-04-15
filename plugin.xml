@@ -27,6 +27,8 @@
     <license>Apache 2.0</license>
     <keywords>cordova,crashlytics</keywords>
 
+    <preference name="CRASHLYTICS_API_KEY" />
+
     <js-module src="www/crashlytics.js" name="crashlytics">
         <clobbers target="navigator.crashlytics" />
     </js-module>
@@ -41,6 +43,8 @@
 
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.INTERNET" />
+
+            <meta-data android:name="com.crashlytics.ApiKey" android:value="$CRASHLYTICS_API_KEY" />
         </config-file>
 
         <source-file src="src/android/org/apache/cordova/crashlytics/CrashlyticsPlugin.java" target-dir="src/org/apache/cordova/crashlytics" />
