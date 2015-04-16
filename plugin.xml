@@ -53,6 +53,23 @@
         <source-file src="src/android/org/apache/cordova/crashlytics/CrashlyticsPlugin.java" target-dir="src/org/apache/cordova/crashlytics" />
     </platform>
 
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+        <feature name="CrashlyticsPlugin">
+            <param name="ios-package" value="CrashlyticsPlugin"/>
+            <param name="onload" value="true"/>
+        </feature>
+
+        <preference name="CRASHLYTICS_API_KEY" value="$CRASHLYTICS_API_KEY"/>
+      </config-file>
+        <header-file src="src/ios/CrashlyticsPlugin.h" />
+        <source-file src="src/ios/CrashlyticsPlugin.m" />
+
+        <!-- Crashlytics framework -->
+        <framework src="libs/ios/Crashlytics.framework" custom="true" />
+    </platform>
+
     <hook type="before_build" src="hooks/before_build.js" />
     <hook type="after_prepare" src="hooks/after_prepare.js" />
 </plugin>
