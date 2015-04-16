@@ -1,0 +1,11 @@
+// after_prepare.js modifies buildscript section with repository and dependency
+
+apply plugin: 'crashlytics'
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+dependencies {
+    compile 'com.crashlytics.android:crashlytics:1.+'
+}

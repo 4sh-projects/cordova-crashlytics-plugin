@@ -48,13 +48,11 @@
             <meta-data android:name="com.crashlytics.ApiKey" android:value="$CRASHLYTICS_API_KEY" />
         </config-file>
 
-        <config-file target="custom_rules.xml" parent="/*">
-            <import file="../../plugins/org.apache.cordova.crashlytics/tools/android/crashlytics_build.xml"/>
-        </config-file>
+        <framework src="build-extras.gradle" custom="true" type="gradleReference" />
 
         <source-file src="src/android/org/apache/cordova/crashlytics/CrashlyticsPlugin.java" target-dir="src/org/apache/cordova/crashlytics" />
-        <source-file src="libs/android/crashlytics-1.1.13.jar" target-dir="libs" />
     </platform>
 
     <hook type="before_build" src="hooks/before_build.js" />
+    <hook type="after_prepare" src="hooks/after_prepare.js" />
 </plugin>
