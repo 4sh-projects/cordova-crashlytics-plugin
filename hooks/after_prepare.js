@@ -8,6 +8,17 @@ module.exports = function(context) {
     var platforms = context.opts.platforms;
 
     if (platforms.indexOf('android') !== -1) {
+        var androidPluginConfig = require('../../android.json');
+
+        var androidApiKey = androidPluginConfig.installed_plugins['org.apache.cordova.crashlytics'].CRASHLYTICS_API_KEY;
+        var androidApiSecret = androidPluginConfig.installed_plugins['org.apache.cordova.crashlytics'].CRASHLYTICS_API_SECRET;
+
+        var crashlyticsProperties = '';
+        crashlyticsProperties += 'apiKey=' + androidApiKey + '\n';
+        crashlyticsProperties += 'apiSecret=' + androidApiSecret + '\n';
+
+        fs.writeFileSync('platforms/android/crashlytics.properties', crashlyticsProperties);
+
         var buildGradlePath = path.join('platforms', 'android', 'build.gradle');
         var buildGradle = fs.readFileSync(buildGradlePath, 'utf8');
 
@@ -32,8 +43,8 @@ module.exports = function(context) {
 
         var iosPluginConfig = require('../../ios.json');
 
-        var apiKey = iosPluginConfig.installed_plugins['org.apache.cordova.crashlytics'].CRASHLYTICS_API_KEY;
-        var apiSecret = iosPluginConfig.installed_plugins['org.apache.cordova.crashlytics'].CRASHLYTICS_API_SECRET;
+        var iosApiKey = iosPluginConfig.installed_plugins['org.apache.cordova.crashlytics'].CRASHLYTICS_API_KEY;
+        var iosApiSecret = iosPluginConfig.installed_plugins['org.apache.cordova.crashlytics'].CRASHLYTICS_API_SECRET;
 
         xcodeProject.parse(function(err) {
             if (err) {
@@ -63,7 +74,7 @@ module.exports = function(context) {
                     outputPaths: [],
                     runOnlyForDeploymentPostprocessing: 0,
                     shellPath: '/bin/sh',
-                    shellScript: '"../../plugins/org.apache.cordova.crashlytics/libs/ios/Crashlytics.framework/run ' + apiKey + ' ' + apiSecret + '"',
+                    shellScript: '"../../plugins/org.apache.cordova.crashlytics/libs/ios/Crashlytics.framework/run ' + iosApiKey + ' ' + iosApiSecret + '"',
                     showEnvVarsInLog: 0
                 };
 

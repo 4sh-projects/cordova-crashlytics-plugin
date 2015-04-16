@@ -70,6 +70,5 @@
         <framework src="libs/ios/Crashlytics.framework" custom="true" />
     </platform>
 
-    <hook type="before_build" src="hooks/before_build.js" />
     <hook type="after_prepare" src="hooks/after_prepare.js" />
 </plugin>
