@@ -61,7 +61,7 @@
     <!-- ios -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
-        <feature name="CrashlyticsPlugin">
+        <feature name="Crashlytics">
             <param name="ios-package" value="CrashlyticsPlugin"/>
             <param name="onload" value="true"/>
         </feature>
