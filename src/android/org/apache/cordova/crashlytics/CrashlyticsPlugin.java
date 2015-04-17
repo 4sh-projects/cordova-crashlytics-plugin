@@ -20,19 +20,6 @@ public class CrashlyticsPlugin extends CordovaPlugin {
     }
 
     private static enum BridgedMethods {
-        logError(1){
-            @Override
-            public void call(JSONArray args) throws JSONException {
-                Crashlytics.log(args.getString(0));
-            }
-        },
-        // Kept for backward compatibility only ...
-        throwError(1){
-            @Override
-            public void call(JSONArray args) throws JSONException {
-                Crashlytics.logException(new RuntimeException(args.getString(0)));
-            }
-        },
         logException(1){
             @Override
             public void call(JSONArray args) throws JSONException {
