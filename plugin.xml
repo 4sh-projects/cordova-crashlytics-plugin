@@ -27,6 +27,11 @@
     <license>Apache 2.0</license>
     <keywords>cordova,crashlytics</keywords>
 
+    <engines>
+        <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-ios" version=">=3.8.0" />
+    </engines>
+
     <preference name="CRASHLYTICS_API_KEY" />
     <preference name="CRASHLYTICS_API_SECRET" />
 
