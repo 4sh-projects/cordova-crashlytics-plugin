@@ -23,14 +23,19 @@ module.exports = function(context) {
         var buildGradlePath = path.join('platforms', 'android', 'build.gradle');
         var buildGradle = fs.readFileSync(buildGradlePath, 'utf8');
 
-        var buildscriptExtra =  '    repositories {\n' +
+        var buildGradleExtra =  '// CRASHLYTICS PLUGIN EXTRAS START\n' +
+                                'buildscript {\n' +
+                                '    repositories {\n' +
                                 '        maven { url \'http://download.crashlytics.com/maven\' }\n' +
                                 '    }\n' +
                                 '    dependencies {\n' +
                                 '        classpath \'com.crashlytics.tools.gradle:crashlytics-gradle:1.+\'\n' +
-                                '    }\n';
+                                '    }\n' +
+                                '}\n' +
+                                '// CRASHLYTICS PLUGIN EXTRAS END\n';
 
-        buildGradle = buildGradle.replace(/(buildscript {)/, '$1\n' + buildscriptExtra);
+        buildGradle = buildGradle.replace(/\/\/ CRASHLYTICS PLUGIN EXTRAS START[\s\S]*\/\/ CRASHLYTICS PLUGIN EXTRAS END/, '');
+        buildGradle += buildGradleExtra;
 
         fs.writeFileSync(buildGradlePath, buildGradle);
     }
