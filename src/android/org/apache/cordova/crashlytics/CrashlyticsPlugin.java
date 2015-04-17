@@ -1,8 +1,11 @@
 package org.apache.cordova.crashlytics;
 
 import android.content.Context;
+
 import com.crashlytics.android.Crashlytics;
-import org.apache.cordova.*;
+
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -11,9 +14,9 @@ import javax.security.auth.callback.Callback;
 public class CrashlyticsPlugin extends CordovaPlugin {
 
     @Override
-    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-        super.initialize(cordova, webView);
-        Crashlytics.start((Context) cordova.getActivity());
+    public void pluginInitialize() {
+        super.pluginInitialize();
+        Crashlytics.start(cordova.getActivity());
     }
 
     private static enum BridgedMethods {
