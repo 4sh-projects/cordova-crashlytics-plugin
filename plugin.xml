@@ -44,13 +44,12 @@
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Crashlytics" >
                 <param name="android-package" value="org.apache.cordova.crashlytics.CrashlyticsPlugin"/>
+                <param name="onload" value="true" />
             </feature>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.INTERNET" />
-
-            <meta-data android:name="com.crashlytics.ApiKey" android:value="$CRASHLYTICS_API_KEY" />
         </config-file>
 
         <framework src="build-extras.gradle" custom="true" type="gradleReference" />
