@@ -70,9 +70,9 @@
         <header-file src="src/ios/CrashlyticsPlugin.h" />
         <source-file src="src/ios/CrashlyticsPlugin.m" />
 
-        <!-- Crashlytics framework -->
         <framework src="libs/ios/Crashlytics.framework" custom="true" />
     </platform>
 
-    <hook type="after_prepare" src="hooks/after_prepare.js" />
+    <hook type="after_plugin_install" src="hooks/after_plugin_install.js" />
+    <hook type="before_plugin_uninstall" src="hooks/before_plugin_uninstall.js" />
 </plugin>
