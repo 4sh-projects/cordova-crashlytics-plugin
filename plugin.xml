@@ -52,6 +52,10 @@
             <uses-permission android:name="android.permission.INTERNET" />
         </config-file>
 
+        <config-file target="AndroidManifest.xml" parent="application">
+            <meta-data android:name="com.crashlytics.ApiKey" android:value="$CRASHLYTICS_API_KEY"/>
+        </config-file>
+
         <config-file target="custom_rules.xml" parent="/*">
             <import file="../../plugins/org.apache.cordova.crashlytics/libs/android/crashlytics_build.xml"/>
         </config-file>
