@@ -28,7 +28,7 @@
     <keywords>cordova,crashlytics</keywords>
 
     <engines>
-        <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-android" version=">=3.7.0" />
         <engine name="cordova-ios" version=">=3.8.0" />
     </engines>
 
@@ -52,7 +52,11 @@
             <uses-permission android:name="android.permission.INTERNET" />
         </config-file>
 
-        <framework src="build-extras.gradle" custom="true" type="gradleReference" />
+        <config-file target="custom_rules.xml" parent="/*">
+            <import file="../../plugins/org.apache.cordova.crashlytics/libs/android/crashlytics_build.xml"/>
+        </config-file>
+
+        <source-file src="libs/android/crashlytics.jar" target-dir="libs" />
 
         <source-file src="src/android/org/apache/cordova/crashlytics/CrashlyticsPlugin.java" target-dir="src/org/apache/cordova/crashlytics" />
     </platform>

@@ -37,6 +37,8 @@ module.exports = {
                         '        classpath \'com.crashlytics.tools.gradle:crashlytics-gradle:1.+\'\n' +
                         '    }\n' +
                         '}\n' +
+                        '\n' +
+                        'apply plugin: \'crashlytics\'\n' +
                         '// CRASHLYTICS PLUGIN EXTRAS END\n';
 
         this._writeBuildGradle(buildGradle);
