@@ -1,6 +1,6 @@
 # org.apache.cordova.crashlytics
 
-This plugin provides a bridge between javascript error handling and Crashlytics serverside
+This plugin provides a bridge between javascript error handling and [Crashlytics](https://www.crashlytics.com/) serverside
 client API.
 
 ## Installation
