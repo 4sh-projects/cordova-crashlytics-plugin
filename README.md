@@ -13,8 +13,8 @@ client API.
 Plugins provides a `navigator.crashlytics` object with following methods :
 - logException(string) : Sends an exception (non fatal) to the Crashlytics backend
 - log(string) : Sends a standard log message (non fatal) to the Crashlytics backend
-- log(errorLevel, tag, msg)
-- setApplicationInstallationIdentifier(appInstId)
+- log(errorLevel, tag, msg) (Android only)
+- setApplicationInstallationIdentifier(appInstId) (Android only)
 - setBool(key, value)
 - setDouble(key, value)
 - setFloat(key, value)
@@ -29,6 +29,7 @@ Plugins provides a `navigator.crashlytics` object with following methods :
 ### Supported platforms
 
 - Android
+- iOS
 
 ### AngularJS integration
 
