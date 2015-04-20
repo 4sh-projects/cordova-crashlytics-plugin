@@ -27,7 +27,8 @@ module.exports = {
     addBuildGradleExtras: function() {
         var buildGradle = this._readBuildGradle();
 
-        buildGradle +=  '// CRASHLYTICS PLUGIN EXTRAS START\n' +
+        buildGradle +=  '\n' +
+                        '// CRASHLYTICS PLUGIN EXTRAS START\n' +
                         'buildscript {\n' +
                         '    repositories {\n' +
                         '        maven { url \'http://download.crashlytics.com/maven\' }\n' +
@@ -44,7 +45,7 @@ module.exports = {
     removeBuildGradleExtras: function() {
         var buildGradle = this._readBuildGradle();
 
-        buildGradle = buildGradle.replace(/\/\/ CRASHLYTICS PLUGIN EXTRAS START[\s\S]*\/\/ CRASHLYTICS PLUGIN EXTRAS END\n/, '');
+        buildGradle = buildGradle.replace(/\n\/\/ CRASHLYTICS PLUGIN EXTRAS START[\s\S]*\/\/ CRASHLYTICS PLUGIN EXTRAS END\n/, '');
 
         this._writeBuildGradle(buildGradle);
     },
