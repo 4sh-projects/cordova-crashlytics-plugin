@@ -26,7 +26,7 @@ var Crashlytics = function(){
         (function(idx){
             var currentMethod = methods[idx];
             self[currentMethod] = function(){
-                execCall(currentMethod, arguments);
+                execCall(currentMethod,  Array.prototype.slice.call(arguments));
             };
         })(i);
     }

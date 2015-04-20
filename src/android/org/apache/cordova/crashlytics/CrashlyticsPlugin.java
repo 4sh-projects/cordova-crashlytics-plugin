@@ -1,8 +1,12 @@
 package org.apache.cordova.crashlytics;
 
 import android.content.Context;
+
 import com.crashlytics.android.Crashlytics;
-import org.apache.cordova.*;
+
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import javax.security.auth.callback.Callback;
@@ -10,34 +14,21 @@ import javax.security.auth.callback.Callback;
 public class CrashlyticsPlugin extends CordovaPlugin {
 
     @Override
-    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-        super.initialize(cordova, webView);
-        Crashlytics.start((Context) cordova.getActivity());
+    public void pluginInitialize() {
+        super.pluginInitialize();
+        Crashlytics.start(cordova.getActivity());
     }
 
     private static enum BridgedMethods {
-        logError(1){
-            @Override
-            public void call(CordovaArgs args) throws JSONException {
-                Crashlytics.log(args.getString(0));
-            }
-        },
-        // Kept for backward compatibility only ...
-        throwError(1){
-            @Override
-            public void call(CordovaArgs args) throws JSONException {
-                Crashlytics.logException(new RuntimeException(args.getString(0)));
-            }
-        },
         logException(1){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.logException(new RuntimeException(args.getString(0)));
             }
         },
         log(1){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 if (argsLengthValid(3, args)) {
                     Crashlytics.log(args.getInt(0), args.getString(1), args.getString(2));
                 } else {
@@ -47,92 +38,89 @@ public class CrashlyticsPlugin extends CordovaPlugin {
         },
         setApplicationInstallationIdentifier(1){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setApplicationInstallationIdentifier(args.getString(0));
             }
         },
         setBool(2){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setBool(args.getString(0), args.getBoolean(1));
             }
         },
         setDouble(2){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setDouble(args.getString(0), args.getDouble(1));
             }
         },
         setFloat(2){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setFloat(args.getString(0), Float.valueOf(args.getString(1)));
             }
         },
         setInt(2){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setInt(args.getString(0), args.getInt(1));
             }
         },
         setLong(2){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setLong(args.getString(0), args.getLong(1));
             }
         },
         setString(2){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setString(args.getString(0), args.getString(1));
             }
         },
         setUserEmail(1){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setUserEmail(args.getString(0));
             }
         },
         setUserIdentifier(1){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setUserIdentifier(args.getString(0));
             }
         },
         setUserName(1){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
+            public void call(JSONArray args) throws JSONException {
                 Crashlytics.setUserName(args.getString(0));
             }
         },
-        simulateCrash(0, false){
+        simulateCrash(0, true){
             @Override
-            public void call(CordovaArgs args) throws JSONException {
-                String message = args.getString(0) == null ? "This is a crash":args.getString(0);
+            public void call(JSONArray args) throws JSONException {
+                String message = args.length() == 0 ? "This is a crash":args.getString(0);
                 throw new RuntimeException(message);
             }
         };
 
         int minExpectedArgsLength;
-        boolean isAsync = true;
+        boolean throwThrowable;
         BridgedMethods(int minExpectedArgsLength) {
-            this(minExpectedArgsLength, true);
+            this(minExpectedArgsLength, false);
         }
-        BridgedMethods(int minExpectedArgsLength, boolean isAsync) {
+        BridgedMethods(int minExpectedArgsLength, boolean throwThrowable) {
             this.minExpectedArgsLength = minExpectedArgsLength;
-            this.isAsync = isAsync;
+            this.throwThrowable = throwThrowable;
         }
 
-        public abstract void call(CordovaArgs args) throws JSONException;
+        public abstract void call(JSONArray args) throws JSONException;
 
-        public static boolean argsLengthValid(int minExpectedArgsLenght, CordovaArgs args) throws JSONException {
-            return (args != null
-                    // Doesn't seem to have any api (better than this...) to retrieve args' length ...
-                    && args.getString(minExpectedArgsLenght -1)!=null
-                    && args.getString(minExpectedArgsLenght -1).length()!=0);
+        public static boolean argsLengthValid(int minExpectedArgsLength, JSONArray args) throws JSONException {
+            return (args != null && args.length() >= minExpectedArgsLength);
         }
 
-        public Runnable runnableFrom(final CallbackContext callbackContext, final CordovaArgs args) {
+        public Runnable runnableFrom(final CallbackContext callbackContext, final JSONArray args) {
             final BridgedMethods method = this;
             return new Runnable() {
                 @Override
@@ -142,6 +130,9 @@ public class CrashlyticsPlugin extends CordovaPlugin {
                         callbackContext.success();
                     } catch (Throwable t) {
                         callbackContext.error(t.getMessage());
+                        if (method.throwThrowable) {
+                            throw new RuntimeException(t);
+                        }
                     }
                 }
             };
@@ -149,7 +140,7 @@ public class CrashlyticsPlugin extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute(String action, final CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
+    public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
         try {
             final BridgedMethods bridgedMethods = BridgedMethods.valueOf(action);
             if (bridgedMethods != null) {
@@ -159,12 +150,8 @@ public class CrashlyticsPlugin extends CordovaPlugin {
                 }
 
                 Runnable runnable = bridgedMethods.runnableFrom(callbackContext, args);
-                if(bridgedMethods.isAsync) {
-                    cordova.getThreadPool().execute(runnable);
-                } else {
-                    runnable.run();
-                }
-                
+                cordova.getThreadPool().execute(runnable);
+
                 return true;
             }
         }catch(IllegalArgumentException e) { // Didn't found any enum value corresponding to requested action

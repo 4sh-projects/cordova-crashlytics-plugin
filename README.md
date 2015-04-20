@@ -1,34 +1,20 @@
 # org.apache.cordova.crashlytics
 
-This plugin provides a bridge between javascript error handling and Crashlytics serverside
+This plugin provides a bridge between javascript error handling and [Crashlytics](https://www.crashlytics.com/) serverside
 client API.
 
 ## Installation
 
-    cordova plugin add https://github.com/4sh-projects/cordova-crashlytics-plugin
+    cordova plugin add https://github.com/4sh-projects/cordova-crashlytics-plugin --variable CRASHLYTICS_API_SECRET=<YOUR CRASHLYTICS API SECRET HERE> --variable CRASHLYTICS_API_KEY=<YOUR CRASHLYTICS API KEY HERE>
 
-### Android specificities
-
-Update your `platforms/android/AndroidManifest.xm` file by adding your crashlytics API key :
-
-    <?xml version='1.0' encoding='utf-8'?>
-    <manifest android:hardwareAccelerated="true" android:versionCode="1" android:versionName="1.0.0" android:windowSoftInputMode="adjustPan" package="your.package.here" xmlns:android="http://schemas.android.com/apk/res/android">
-    ...
-        <application android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name">
-            ...
-            <meta-data android:name="com.crashlytics.ApiKey" android:value="<YOUR APIKEY HERE>" />
-            ...
-        </application>
-    ...
-    </manifest>
 
 ## Crashlytics
 
 Plugins provides a `navigator.crashlytics` object with following methods :
 - logException(string) : Sends an exception (non fatal) to the Crashlytics backend
 - log(string) : Sends a standard log message (non fatal) to the Crashlytics backend
-- log(errorLevel, tag, msg)
-- setApplicationInstallationIdentifier(appInstId)
+- log(errorLevel, tag, msg) (Android only)
+- setApplicationInstallationIdentifier(appInstId) (Android only)
 - setBool(key, value)
 - setDouble(key, value)
 - setFloat(key, value)
@@ -43,6 +29,7 @@ Plugins provides a `navigator.crashlytics` object with following methods :
 ### Supported platforms
 
 - Android
+- iOS
 
 ### AngularJS integration
 
