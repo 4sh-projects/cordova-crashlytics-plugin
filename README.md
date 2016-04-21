@@ -9,7 +9,7 @@ client API.
 
 ### Android specificities
 
-Update your `platforms/android/AndroidManifest.xm` file by adding your crashlytics API key :
+Update your `platforms/android/AndroidManifest.xml` file by adding your crashlytics API key :
 
     <?xml version='1.0' encoding='utf-8'?>
     <manifest android:hardwareAccelerated="true" android:versionCode="1" android:versionName="1.0.0" android:windowSoftInputMode="adjustPan" package="your.package.here" xmlns:android="http://schemas.android.com/apk/res/android">
@@ -21,6 +21,19 @@ Update your `platforms/android/AndroidManifest.xm` file by adding your crashlyti
         </application>
     ...
     </manifest>
+
+Download `crashlytics_build.xml` and add it to your `custom_rules.xml`:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project>
+        <import file="<PATH TO CRASHLYTICS FOLDER>/crashlytics/crashlytics_build.xml"/>
+        <target name="-pre-compile">
+            ...
+        </target>
+        <target name="-post-build">
+            ...
+        </target>
+    </project>
 
 ## Crashlytics
 
